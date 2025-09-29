@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI TestBox - Intelligent Stock Analysis Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>🤖 AI TestBox</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#features" class="nav-link">Features</a></li>
+                <li class="nav-item"><a href="#demo" class="nav-link">Demo</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="#" class="nav-link cta-button">Get Started</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Intelligent Stock Analysis
+                    <span class="gradient-text">Powered by AI</span>
+                </h1>
+                <p class="hero-description">
+                    Transform your investment decisions with cutting-edge artificial intelligence. 
+                    Get real-time market insights, predictive analytics, and personalized recommendations.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="startAnalysis">Start Analysis</button>
+                    <button class="btn btn-secondary">Watch Demo</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="ai-visualization">
+                    <div class="floating-card" id="card1">
+                        <div class="card-content">
+                            <span class="metric-label">AI Confidence</span>
+                            <span class="metric-value" id="confidence">87%</span>
+                        </div>
+                    </div>
+                    <div class="floating-card" id="card2">
+                        <div class="card-content">
+                            <span class="metric-label">Market Trend</span>
+                            <span class="metric-value trend-up">↗ Bullish</span>
+                        </div>
+                    </div>
+                    <div class="floating-card" id="card3">
+                        <div class="card-content">
+                            <span class="metric-label">Risk Score</span>
+                            <span class="metric-value">Low</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <h2 class="section-title">AI-Powered Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Smart Analysis</h3>
+                    <p>Advanced machine learning algorithms analyze market patterns and predict stock movements with high accuracy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Real-time Data</h3>
+                    <p>Get live market data and instant alerts on significant changes that could impact your investments.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Personalized Insights</h3>
+                    <p>Tailored recommendations based on your investment goals, risk tolerance, and portfolio composition.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔮</div>
+                    <h3>Predictive Modeling</h3>
+                    <p>Forecast market trends and identify opportunities before they become obvious to the broader market.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightning Fast</h3>
+                    <p>Process thousands of data points in milliseconds to deliver insights when timing matters most.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Risk Management</h3>
+                    <p>Intelligent risk assessment and portfolio optimization to protect your investments from market volatility.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo" id="demo">
+        <div class="demo-container">
+            <h2 class="section-title">See AI in Action</h2>
+            <div class="demo-interface">
+                <div class="demo-input">
+                    <input type="text" id="stockInput" placeholder="Enter stock symbol (e.g., AAPL)" class="stock-input">
+                    <button class="btn btn-primary" id="analyzeBtn">Analyze</button>
+                </div>
+                <div class="demo-results" id="demoResults">
+                    <div class="result-placeholder">
+                        <div class="placeholder-icon">🤖</div>
+                        <p>Enter a stock symbol to see AI analysis in action</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🤖 AI TestBox</h3>
+                    <p>Revolutionizing stock analysis with artificial intelligence.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                        <li><a href="#">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI TestBox. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
