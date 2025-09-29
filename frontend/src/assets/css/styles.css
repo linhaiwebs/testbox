@@ -10,8 +10,8 @@ body {
     line-height: 1.7;
     color: #2d3748;
     background: 
-        linear-gradient(135deg, rgba(253, 242, 248, 0.9) 0%, rgba(252, 231, 243, 0.9) 30%, rgba(243, 232, 255, 0.9) 70%, rgba(224, 231, 255, 0.9) 100%),
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><style>.stock-text{font-family:monospace;font-size:14px;fill:%23000;opacity:0.03;}</style></defs><text class="stock-text" x="50" y="100">7203 トヨタ ¥2,450 +1.2%</text><text class="stock-text" x="200" y="200">6758 ソニー ¥12,800 -0.8%</text><text class="stock-text" x="80" y="300">9984 ソフトバンク ¥1,520 +2.1%</text><text class="stock-text" x="300" y="150">4689 ヤフー ¥580 +0.5%</text><text class="stock-text" x="150" y="400">9432 NTT ¥3,890 -0.3%</text><text class="stock-text" x="400" y="250">7974 任天堂 ¥5,670 +1.8%</text><text class="stock-text" x="100" y="500">8058 三菱商事 ¥4,320 +0.9%</text><text class="stock-text" x="350" y="350">6098 リクルート ¥4,890 -1.2%</text><text class="stock-text" x="250" y="600">4503 アステラス ¥1,890 +0.7%</text><text class="stock-text" x="450" y="450">8031 三井物産 ¥3,560 +1.5%</text><text class="stock-text" x="120" y="700">9983 ファストリ ¥89,400 -2.1%</text><text class="stock-text" x="380" y="550">6367 ダイキン ¥21,800 +0.4%</text></svg>');
+        linear-gradient(135deg, rgba(254, 242, 242, 0.95) 0%, rgba(254, 226, 226, 0.9) 25%, rgba(252, 165, 165, 0.1) 50%, rgba(239, 68, 68, 0.05) 75%, rgba(220, 38, 38, 0.1) 100%),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><style>.stock-text{font-family:monospace;font-size:12px;fill:%23dc2626;opacity:0.08;}</style></defs><text class="stock-text" x="50" y="100">7203 トヨタ ¥2,450 ↗+1.2%</text><text class="stock-text" x="200" y="200">6758 ソニー ¥12,800 ↘-0.8%</text><text class="stock-text" x="80" y="300">9984 SBG ¥1,520 ↗+2.1%</text><text class="stock-text" x="300" y="150">4689 ヤフー ¥580 ↗+0.5%</text><text class="stock-text" x="150" y="400">9432 NTT ¥3,890 ↘-0.3%</text><text class="stock-text" x="400" y="250">7974 任天堂 ¥5,670 ↗+1.8%</text><text class="stock-text" x="100" y="500">8058 三菱商事 ¥4,320 ↗+0.9%</text><text class="stock-text" x="350" y="350">6098 リクルート ¥4,890 ↘-1.2%</text><text class="stock-text" x="250" y="600">4503 アステラス ¥1,890 ↗+0.7%</text><text class="stock-text" x="450" y="450">8031 三井物産 ¥3,560 ↗+1.5%</text><text class="stock-text" x="120" y="700">9983 ファストリ ¥89,400 ↘-2.1%</text><text class="stock-text" x="380" y="550">6367 ダイキン ¥21,800 ↗+0.4%</text></svg>');
     min-height: 100vh;
     font-weight: 400;
     display: flex;
@@ -48,107 +48,72 @@ body {
     position: relative;
 }
 
-/* AI Robot Logo */
-.ai-logo {
+/* Stock Chart Logo */
+.stock-logo {
     margin-bottom: 2rem;
     display: inline-block;
     animation: float 6s ease-in-out infinite;
 }
 
-.robot-head {
+.chart-container {
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 20px;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    border-radius: 15px;
     position: relative;
     margin: 0 auto 10px;
-    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-}
-
-.robot-eyes {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    box-shadow: 0 8px 32px rgba(220, 38, 38, 0.3);
     display: flex;
-    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-.eye {
-    width: 12px;
-    height: 12px;
-    background: white;
-    border-radius: 50%;
-    position: relative;
-    animation: blink 4s ease-in-out infinite;
-}
-
-.eye::after {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 8px;
-    height: 8px;
-    background: #2d3748;
-    border-radius: 50%;
-    animation: eyeMove 3s ease-in-out infinite;
-}
-
-.robot-mouth {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 10px;
-    border: 2px solid white;
-    border-top: none;
-    border-radius: 0 0 10px 10px;
-}
-
-.robot-body {
-    width: 60px;
+.chart-bars {
+    display: flex;
+    align-items: end;
+    gap: 4px;
     height: 40px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 15px;
-    margin: 0 auto;
-    position: relative;
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
 }
 
-.body-light {
+.bar {
+    width: 6px;
+    background: white;
+    border-radius: 2px 2px 0 0;
+    animation: barGrow 2s ease-in-out infinite;
+}
+
+.bar-1 { height: 20px; animation-delay: 0s; }
+.bar-2 { height: 35px; animation-delay: 0.2s; }
+.bar-3 { height: 25px; animation-delay: 0.4s; }
+.bar-4 { height: 40px; animation-delay: 0.6s; }
+.bar-5 { height: 30px; animation-delay: 0.8s; }
+
+.trend-line {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    background: #4ade80;
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-    box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+    top: 25px;
+    left: 15px;
+    right: 15px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 1px;
+    transform: rotate(15deg);
+    animation: trendPulse 3s ease-in-out infinite;
+}
+
+@keyframes barGrow {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(1.2); }
+}
+
+@keyframes trendPulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
 }
 
 @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
-}
-
-@keyframes blink {
-    0%, 90%, 100% { transform: scaleY(1); }
-    95% { transform: scaleY(0.1); }
-}
-
-@keyframes eyeMove {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(2px); }
-    75% { transform: translateX(-2px); }
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
 }
 
 .hero-title {
@@ -161,7 +126,7 @@ body {
 }
 
 .highlight {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -193,8 +158,8 @@ body {
 }
 
 .search-wrapper:focus-within {
-    box-shadow: 0 15px 50px rgba(102, 126, 234, 0.2);
-    border-color: rgba(102, 126, 234, 0.3);
+    box-shadow: 0 15px 50px rgba(220, 38, 38, 0.2);
+    border-color: rgba(220, 38, 38, 0.3);
 }
 
 .search-input {
@@ -216,7 +181,7 @@ body {
 
 .search-button {
     width: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
     color: white;
     border: none;
     padding: 1.25rem 1.5rem;
@@ -225,13 +190,13 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 500;
     font-size: 1rem;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
     margin-top: 0.75rem;
 }
 
 .search-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
 }
 
 .search-button:active {
@@ -345,7 +310,7 @@ body {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
     animation: bounce 1.4s ease-in-out infinite both;
 }
 
@@ -374,7 +339,7 @@ body {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
     width: 0%;
     border-radius: 2px;
     animation: progress 3s ease-out forwards;
@@ -400,7 +365,7 @@ body {
 
 .confirm-button {
     width: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
     color: white;
     border: none;
     padding: 1rem;
@@ -414,7 +379,7 @@ body {
 
 .confirm-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3);
 }
 
 /* Responsive Design */
@@ -429,14 +394,9 @@ body {
         right: 10%;
     }
     
-    .robot-head {
+    .chart-container {
         width: 70px;
         height: 70px;
-    }
-    
-    .robot-body {
-        width: 50px;
-        height: 35px;
     }
     
     .hero-title {

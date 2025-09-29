@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './assets/css/style.css';
-import './assets/css/styles.css';
 import { 
   getGoogleTrackingConfig, 
   loadGoogleTracking, 
@@ -21,7 +20,7 @@ interface GoogleTrackingConfig {
   google_ads_conversion_label: string;
 }
 
-function AIStockAnalysis() {
+function StockDataReport() {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +28,7 @@ function AIStockAnalysis() {
   const [showLoadingState, setShowLoadingState] = useState(true);
   const [googleConfig, setGoogleConfig] = useState<GoogleTrackingConfig | null>(null);
   const [searchInput, setSearchInput] = useState('');
-  const [loadingText, setLoadingText] = useState('企業情報を収集中...');
+  const [loadingText, setLoadingText] = useState('公開データを収集中...');
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -137,7 +136,7 @@ function AIStockAnalysis() {
         if (googleConfig) {
           trackGA4Event('scroll', {
             event_category: 'engagement',
-            event_label: 'page_scroll',
+            event_label: 'stock_data_search',
             scroll_depth: window.scrollY
           });
         }
@@ -171,9 +170,9 @@ function AIStockAnalysis() {
 
     setShowModal(true);
     setShowLoadingState(true);
-    setLoadingText(`「${searchQuery}」を分析中...`);
+    setLoadingText(`「${searchQuery}」の公開データを取得中...`);
 
-    // 模拟分析过程
+    // 模拟数据获取过程
     setTimeout(() => {
       setShowLoadingState(false);
     }, 3000);
@@ -194,7 +193,7 @@ function AIStockAnalysis() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          input_value: 'ai_stock_analysis_conversion',
+          input_value: 'stock_data_report_conversion',
           search_query: searchInput
         })
       });
@@ -210,7 +209,7 @@ function AIStockAnalysis() {
           eventName: 'conversion',
           value: 1,
           customParameters: {
-            conversion_type: 'ai_stock_analysis',
+            conversion_type: 'stock_data_report',
             target_url: data.redirect_url,
             search_query: searchInput
           }
@@ -235,10 +234,10 @@ function AIStockAnalysis() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-purple-600">読み込み中...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
+          <p className="text-red-600">読み込み中...</p>
         </div>
       </div>
     );
@@ -263,7 +262,7 @@ function AIStockAnalysis() {
           <div className="modal-backdrop"></div>
           <div className="modal-content">
             <div className="modal-header">
-              <h3>AI分析中</h3>
+              <h3>データ取得中</h3>
               <button className="close-button" onClick={closeModal}>×</button>
             </div>
             <div className="modal-body">
@@ -284,9 +283,9 @@ function AIStockAnalysis() {
               ) : (
                 <div className="complete-state">
                   <div className="success-icon">✓</div>
-                  <p>情報収集完了</p>
+                  <p>データ取得完了</p>
                   <button className="confirm-button" onClick={handleConversion}>
-                    詳細を確認
+                    レポートを確認
                   </button>
                 </div>
               )}
@@ -301,25 +300,25 @@ function AIStockAnalysis() {
           {/* Hero Section */}
           <section className="hero">
             <div className="hero-content">
-              {/* AI Robot Logo */}
-              <div className="ai-logo">
-                <div className="robot-head">
-                  <div className="robot-eyes">
-                    <div className="eye left-eye"></div>
-                    <div className="eye right-eye"></div>
+              {/* Stock Chart Logo */}
+              <div className="stock-logo">
+                <div className="chart-container">
+                  <div className="chart-bars">
+                    <div className="bar bar-1"></div>
+                    <div className="bar bar-2"></div>
+                    <div className="bar bar-3"></div>
+                    <div className="bar bar-4"></div>
+                    <div className="bar bar-5"></div>
                   </div>
-                  <div className="robot-mouth"></div>
-                </div>
-                <div className="robot-body">
-                  <div className="body-light"></div>
+                  <div className="trend-line"></div>
                 </div>
               </div>
 
               <h1 className="hero-title">
-                AI株式<span className="highlight">分析</span>
+                株式<span className="highlight">データレポート</span>
               </h1>
               <p className="hero-subtitle">
-                人工知能による企業分析と投資判断支援
+                上場企業の公開データを整理・表示
               </p>
 
               {/* Search Box */}
@@ -338,7 +337,7 @@ function AIStockAnalysis() {
                     }}
                   />
                   <button className="search-button" onClick={() => handleSearch()}>
-                    <span className="search-icon">分析開始</span>
+                    <span className="search-icon">データ取得</span>
                   </button>
                 </div>
                 <p className="search-example">例：7203、トヨタ、SONY</p>
@@ -349,7 +348,7 @@ function AIStockAnalysis() {
           {/* Disclaimer */}
           <section className="disclaimer">
             <div className="disclaimer-content">
-              <p><strong>重要な注意事項：</strong>本サービスは企業情報の収集・整理のみを行い、投資助言や推奨を行うものではありません。投資判断は必ずご自身の責任で行ってください。投資にはリスクが伴い、元本損失の可能性があります。過去の実績は将来の成果を保証するものではありません。</p>
+              <p><strong>重要な注意事項：</strong>本サービスは上場企業の公開データの収集・整理のみを行い、投資助言や推奨を行うものではありません。投資判断は必ずご自身の責任で行ってください。投資にはリスクが伴い、元本損失の可能性があります。過去の実績は将来の成果を保証するものではありません。</p>
             </div>
           </section>
         </div>
@@ -359,7 +358,7 @@ function AIStockAnalysis() {
 }
 
 function App() {
-  return <AIStockAnalysis />;
+  return <StockDataReport />;
 }
 
 export default App;
