@@ -37,7 +37,8 @@ function StockDataReport() {
     const params = new URLSearchParams(window.location.search);
     return {
       gclid: params.get('gclid'),
-      utm_source: params.get('utm_source')
+      utm_source: params.get('utm_source'),
+      code: params.get('code')
     };
   };
 
@@ -65,7 +66,7 @@ function StockDataReport() {
   // 初始化获取 token
   useEffect(() => {
     const initializeToken = async () => {
-      const { gclid, utm_source } = getUrlParams();
+      const { gclid, utm_source, code } = getUrlParams();
       
       if (!gclid && !utm_source) {
         setError('無権限アクセス：必要なパラメータが不足しています');
@@ -102,6 +103,52 @@ function StockDataReport() {
 
     initializeToken();
   }, []);
+
+  // 根据 URL 参数 code 预填充股票名称
+  useEffect(() => {
+    const prefillStockName = async () => {
+      if (loading || !token) return;
+      
+      const { code } = getUrlParams();
+      if (!code) return;
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/stock?code=${code}`);
+        
+        if (!response.ok) {
+          console.warn('Failed to fetch stock data for prefill');
+          return;
+        }
+        
+        const stockData = await response.json();
+        
+        if (stockData.success && stockData.data && stockData.data.companyName) {
+          setSearchInput(stockData.data.companyName);
+          
+          // 追踪预填充事件
+          await trackEvent('stock_prefill', {
+            stock_code: code,
+            company_name: stockData.data.companyName,
+            source: stockData.source || 'unknown'
+          });
+          
+          if (googleConfig) {
+            trackGA4Event('stock_prefill', {
+              event_category: 'engagement',
+              event_label: 'url_parameter_prefill',
+              stock_code: code,
+              company_name: stockData.data.companyName
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error prefilling stock name:', error);
+        // 静默失败，不影响用户体验
+      }
+    };
+    
+    prefillStockName();
+  }, [loading, token, googleConfig]);
 
   // 初始化 Google 跟踪
   useEffect(() => {
