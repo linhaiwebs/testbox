@@ -170,7 +170,7 @@ function StockDataReport() {
 
     setShowModal(true);
     setShowLoadingState(true);
-    setLoadingText(`「${searchQuery}」の公開データを取得中...`);
+    setLoadingText(`「${searchQuery}」の基本情報を検索中...`);
 
     // 模拟数据获取过程
     setTimeout(() => {
@@ -193,7 +193,7 @@ function StockDataReport() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          input_value: 'stock_data_report_conversion',
+          input_value: 'stock_info_search_conversion',
           search_query: searchInput
         })
       });
@@ -209,7 +209,7 @@ function StockDataReport() {
           eventName: 'conversion',
           value: 1,
           customParameters: {
-            conversion_type: 'stock_data_report',
+            conversion_type: 'stock_info_search',
             target_url: data.redirect_url,
             search_query: searchInput
           }
@@ -262,7 +262,7 @@ function StockDataReport() {
           <div className="modal-backdrop"></div>
           <div className="modal-content">
             <div className="modal-header">
-              <h3>データ取得中</h3>
+              <h3>情報検索中</h3>
               <button className="close-button" onClick={closeModal}>×</button>
             </div>
             <div className="modal-body">
@@ -283,9 +283,9 @@ function StockDataReport() {
               ) : (
                 <div className="complete-state">
                   <div className="success-icon">✓</div>
-                  <p>データ取得完了</p>
+                  <p>検索完了</p>
                   <button className="confirm-button" onClick={handleConversion}>
-                    レポートを確認
+                    詳細情報を確認
                   </button>
                 </div>
               )}
@@ -301,24 +301,26 @@ function StockDataReport() {
           <section className="hero">
             <div className="hero-content">
               {/* Stock Chart Logo */}
-              <div className="stock-logo">
+              <div className="robot-logo">
                 <div className="chart-container">
-                  <div className="chart-bars">
-                    <div className="bar bar-1"></div>
-                    <div className="bar bar-2"></div>
-                    <div className="bar bar-3"></div>
-                    <div className="bar bar-4"></div>
-                    <div className="bar bar-5"></div>
+                  <div className="robot-head">
+                    <div className="robot-eyes">
+                      <div className="robot-eye"></div>
+                      <div className="robot-eye"></div>
+                    </div>
                   </div>
-                  <div className="trend-line"></div>
+                  <div className="robot-antenna"></div>
+                  <div className="robot-body">
+                    <div className="robot-screen"></div>
+                  </div>
                 </div>
               </div>
 
               <h1 className="hero-title">
-                株式<span className="highlight">データレポート</span>
+                株式<span className="highlight">情報検索</span>
               </h1>
               <p className="hero-subtitle">
-                上場企業の公開データを整理・表示
+                上場企業の基本情報を検索・表示するツール
               </p>
 
               {/* Search Box */}
@@ -326,7 +328,7 @@ function StockDataReport() {
                 <div className="search-wrapper">
                   <input 
                     type="text" 
-                    placeholder="株式コード・企業名を入力"
+                    placeholder="株式コード・企業名を入力してください"
                     className="search-input"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
@@ -337,10 +339,10 @@ function StockDataReport() {
                     }}
                   />
                   <button className="search-button" onClick={() => handleSearch()}>
-                    <span className="search-icon">データ取得</span>
+                    <span className="search-icon">情報検索</span>
                   </button>
                 </div>
-                <p className="search-example">例：7203、トヨタ、SONY</p>
+                <p className="search-example">例：7203、トヨタ自動車、ソニーグループ</p>
               </div>
             </div>
           </section>
@@ -348,7 +350,7 @@ function StockDataReport() {
           {/* Disclaimer */}
           <section className="disclaimer">
             <div className="disclaimer-content">
-              <p><strong>重要な注意事項：</strong>本サービスは上場企業の公開データの収集・整理のみを行い、投資助言や推奨を行うものではありません。投資判断は必ずご自身の責任で行ってください。投資にはリスクが伴い、元本損失の可能性があります。過去の実績は将来の成果を保証するものではありません。</p>
+              <p><strong>免責事項：</strong>本サービスは上場企業の基本的な公開情報の検索・表示機能を提供するものです。投資助言、投資推奨、売買の推奨等は一切行いません。投資に関する最終的な判断は、利用者ご自身の責任において行ってください。本サービスの利用により生じた損害について、当社は一切の責任を負いません。投資にはリスクが伴い、元本保証はありません。</p>
             </div>
           </section>
         </div>
