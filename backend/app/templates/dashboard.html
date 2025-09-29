@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}仪表板 - 管理后台{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-semibold text-gray-900">管理后台</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-700">欢迎, {{ username }}</span>
+                    <a href="/admin/logout" class="text-sm text-red-600 hover:text-red-800">
+                        <i class="fas fa-sign-out-alt mr-1"></i>退出
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8" x-data="dashboardStats()">
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-users text-2xl text-blue-600"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">今日访问</dt>
+                                <dd class="text-lg font-medium text-gray-900" x-text="stats.todayVisits">-</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-chart-line text-2xl text-green-600"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">转化数</dt>
+                                <dd class="text-lg font-medium text-gray-900" x-text="stats.conversions">-</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-link text-2xl text-purple-600"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">活跃链接</dt>
+                                <dd class="text-lg font-medium text-gray-900" x-text="stats.activeLinks">-</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-key text-2xl text-orange-600"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">活跃Token</dt>
+                                <dd class="text-lg font-medium text-gray-900" x-text="stats.activeTokens">-</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快捷操作 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a href="/admin/links" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-link text-3xl text-blue-600"></i>
+                        </div>
+                        <div class="ml-5">
+                            <h3 class="text-lg font-medium text-gray-900">分流链接管理</h3>
+                            <p class="text-sm text-gray-500">创建、编辑和删除转换链接</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="/admin/tokens" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-key text-3xl text-green-600"></i>
+                        </div>
+                        <div class="ml-5">
+                            <h3 class="text-lg font-medium text-gray-900">Token 管理</h3>
+                            <p class="text-sm text-gray-500">查看 Token 发放情况</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="/admin/analytics" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-chart-bar text-3xl text-purple-600"></i>
+                        </div>
+                        <div class="ml-5">
+                            <h3 class="text-lg font-medium text-gray-900">数据分析</h3>
+                            <p class="text-sm text-gray-500">查看用户行为和统计数据</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- 系统设置 -->
+        <div class="mt-8">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">系统设置</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <a href="/admin/settings/google-tracking" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow">
+                    <div class="p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fab fa-google text-3xl text-red-600"></i>
+                            </div>
+                            <div class="ml-5">
+                                <h3 class="text-lg font-medium text-gray-900">Google 跟踪设置</h3>
+                                <p class="text-sm text-gray-500">配置 GA4 和 Google Ads 转化跟踪</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function dashboardStats() {
+    return {
+        stats: {
+            todayVisits: 0,
+            conversions: 0,
+            activeLinks: 0,
+            activeTokens: 0
+        },
+        
+        async init() {
+            await this.loadStats();
+        },
+        
+        async loadStats() {
+            try {
+                // 这里可以添加实际的统计 API 调用
+                // 暂时使用模拟数据
+                this.stats = {
+                    todayVisits: Math.floor(Math.random() * 100) + 50,
+                    conversions: Math.floor(Math.random() * 20) + 10,
+                    activeLinks: Math.floor(Math.random() * 5) + 3,
+                    activeTokens: Math.floor(Math.random() * 30) + 20
+                };
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+    }
+}
+</script>
+{% endblock %}

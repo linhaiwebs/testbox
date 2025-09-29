@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}分流链接管理 - 管理后台{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-8">
+                    <a href="/admin" class="text-xl font-semibold text-gray-900 hover:text-blue-600">
+                        <i class="fas fa-arrow-left mr-2"></i>管理后台
+                    </a>
+                    <h2 class="text-lg text-gray-700">分流链接管理</h2>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-700">{{ username }}</span>
+                    <a href="/admin/logout" class="text-sm text-red-600 hover:text-red-800">
+                        <i class="fas fa-sign-out-alt mr-1"></i>退出
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8" x-data="linksManager()">
+        <!-- 操作栏 -->
+        <div class="mb-6 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-900">分流链接管理</h1>
+            <button @click="showCreateModal = true" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                <i class="fas fa-plus mr-2"></i>添加链接
+            </button>
+        </div>
+
+        <!-- 链接列表 -->
+        <div class="bg-white shadow overflow-hidden sm:rounded-md">
+            <ul class="divide-y divide-gray-200">
+                <template x-for="link in links" :key="link.id">
+                    <li class="px-6 py-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center">
+                                    <h3 class="text-lg font-medium text-gray-900" x-text="link.name"></h3>
+                                    <span x-show="link.is_active" 
+                                          class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        活跃
+                                    </span>
+                                    <span x-show="!link.is_active" 
+                                          class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                        停用
+                                    </span>
+                                </div>
+                                <p class="mt-1 text-sm text-gray-600" x-text="link.target_url"></p>
+                                <div class="mt-2 flex items-center text-sm text-gray-500">
+                                    <span>权重: <span x-text="link.weight"></span></span>
+                                    <span class="mx-2">•</span>
+                                    <span>创建时间: <span x-text="formatDate(link.created_at)"></span></span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button @click="editLink(link)" 
+                                        class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button @click="deleteLink(link.id)" 
+                                        class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </div>
+
+        <!-- 创建/编辑模态框 -->
+        <div x-show="showCreateModal || showEditModal" 
+             class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+             @click.self="closeModals()">
+            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                <div class="mt-3">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4" 
+                        x-text="showCreateModal ? '添加链接' : '编辑链接'"></h3>
+                    
+                    <form @submit.prevent="showCreateModal ? createLink() : updateLink()">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">链接名称</label>
+                                <input type="text" x-model="formData.name" required
+                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">目标URL</label>
+                                <input type="url" x-model="formData.target_url" required
+                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">权重</label>
+                                <input type="number" x-model="formData.weight" min="0" step="0.1" required
+                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <input type="checkbox" x-model="formData.is_active" 
+                                       class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                <label class="ml-2 block text-sm text-gray-900">启用链接</label>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex justify-end space-x-3">
+                            <button type="button" @click="closeModals()" 
+                                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+                                取消
+                            </button>
+                            <button type="submit" 
+                                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                                <span x-text="showCreateModal ? '创建' : '更新'"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function linksManager() {
+    return {
+        links: [],
+        showCreateModal: false,
+        showEditModal: false,
+        editingId: null,
+        formData: {
+            name: '',
+            target_url: '',
+            weight: 1.0,
+            is_active: true
+        },
+        
+        async init() {
+            await this.loadLinks();
+        },
+        
+        async loadLinks() {
+            try {
+                const response = await axios.get('/api/admin/links');
+                this.links = response.data;
+            } catch (error) {
+                console.error('Failed to load links:', error);
+                showToast('加载链接失败', 'error');
+            }
+        },
+        
+        async createLink() {
+            try {
+                await axios.post('/api/admin/links', this.formData);
+                await this.loadLinks();
+                this.closeModals();
+                showToast('链接创建成功');
+            } catch (error) {
+                console.error('Failed to create link:', error);
+                showToast('创建链接失败', 'error');
+            }
+        },
+        
+        async updateLink() {
+            try {
+                await axios.put(`/api/admin/links/${this.editingId}`, this.formData);
+                await this.loadLinks();
+                this.closeModals();
+                showToast('链接更新成功');
+            } catch (error) {
+                console.error('Failed to update link:', error);
+                showToast('更新链接失败', 'error');
+            }
+        },
+        
+        async deleteLink(id) {
+            if (!confirm('确定要删除这个链接吗？')) return;
+            
+            try {
+                await axios.delete(`/api/admin/links/${id}`);
+                await this.loadLinks();
+                showToast('链接删除成功');
+            } catch (error) {
+                console.error('Failed to delete link:', error);
+                showToast('删除链接失败', 'error');
+            }
+        },
+        
+        editLink(link) {
+            this.editingId = link.id;
+            this.formData = {
+                name: link.name,
+                target_url: link.target_url,
+                weight: link.weight,
+                is_active: link.is_active
+            };
+            this.showEditModal = true;
+        },
+        
+        closeModals() {
+            this.showCreateModal = false;
+            this.showEditModal = false;
+            this.editingId = null;
+            this.formData = {
+                name: '',
+                target_url: '',
+                weight: 1.0,
+                is_active: true
+            };
+        }
+    }
+}
+</script>
+{% endblock %}

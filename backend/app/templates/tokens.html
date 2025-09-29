@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Token 管理 - 管理后台{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-8">
+                    <a href="/admin" class="text-xl font-semibold text-gray-900 hover:text-blue-600">
+                        <i class="fas fa-arrow-left mr-2"></i>管理后台
+                    </a>
+                    <h2 class="text-lg text-gray-700">Token 管理</h2>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-700">{{ username }}</span>
+                    <a href="/admin/logout" class="text-sm text-red-600 hover:text-red-800">
+                        <i class="fas fa-sign-out-alt mr-1"></i>退出
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-900">Token 发放情况</h1>
+            <p class="mt-1 text-sm text-gray-600">查看所有已发放的访问令牌</p>
+        </div>
+
+        <!-- Token 列表 -->
+        <div class="bg-white shadow overflow-hidden sm:rounded-md">
+            <div class="px-4 py-5 sm:px-6 bg-gray-50">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">最近 100 个 Token</h3>
+            </div>
+            
+            <ul class="divide-y divide-gray-200">
+                {% for token in tokens %}
+                <li class="px-6 py-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    {% if token.expires_at > current_time %}
+                                    <div class="h-3 w-3 bg-green-400 rounded-full"></div>
+                                    {% else %}
+                                    <div class="h-3 w-3 bg-red-400 rounded-full"></div>
+                                    {% endif %}
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-sm font-medium text-gray-900">
+                                        会话 ID: {{ token.session_id[:8] }}...
+                                    </h4>
+                                    <div class="mt-1 text-sm text-gray-600">
+                                        <div class="flex items-center space-x-4">
+                                            {% if token.gclid %}
+                                            <span>GCLID: {{ token.gclid[:20] }}{% if token.gclid|length > 20 %}...{% endif %}</span>
+                                            {% endif %}
+                                            {% if token.utm_source %}
+                                            <span>UTM Source: {{ token.utm_source }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end text-sm text-gray-500">
+                            <div>创建: {{ token.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</div>
+                            <div class="mt-1">
+                                {% if token.expires_at > current_time %}
+                                <span class="text-green-600">有效期至: {{ token.expires_at.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                                {% else %}
+                                <span class="text-red-600">已过期: {{ token.expires_at.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            
+            {% if not tokens %}
+            <div class="px-6 py-12 text-center">
+                <i class="fas fa-key text-4xl text-gray-300 mb-4"></i>
+                <p class="text-gray-500">暂无 Token 记录</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- 统计信息 -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-key text-2xl text-green-600"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">有效 Token</dt>
+                                <dd class="text-lg font-medium text-gray-900">{{ valid_tokens_count }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-clock text-2xl text-red-600"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">已过期 Token</dt>
+                                <dd class="text-lg font-medium text-gray-900">{{ expired_tokens_count }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-chart-line text-2xl text-blue-600"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">总计 Token</dt>
+                                <dd class="text-lg font-medium text-gray-900">{{ tokens|length }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

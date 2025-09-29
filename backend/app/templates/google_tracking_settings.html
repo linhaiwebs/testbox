@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Google 跟踪设置 - 管理后台{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-8">
+                    <a href="/admin" class="text-xl font-semibold text-gray-900 hover:text-blue-600">
+                        <i class="fas fa-arrow-left mr-2"></i>管理后台
+                    </a>
+                    <h2 class="text-lg text-gray-700">Google 跟踪设置</h2>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-700">{{ username }}</span>
+                    <a href="/admin/logout" class="text-sm text-red-600 hover:text-red-800">
+                        <i class="fas fa-sign-out-alt mr-1"></i>退出
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8" x-data="googleTrackingSettings()">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-900">Google 跟踪设置</h1>
+            <p class="mt-1 text-sm text-gray-600">配置 Google Analytics 4 和 Google Ads 转化跟踪</p>
+        </div>
+
+        <!-- 设置表单 -->
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">跟踪配置</h3>
+                <p class="mt-1 text-sm text-gray-500">请填入您的 Google Analytics 4 和 Google Ads 相关 ID</p>
+            </div>
+            
+            <form @submit.prevent="saveSettings()" class="px-6 py-4 space-y-6">
+                <!-- GA4 Measurement ID -->
+                <div>
+                    <label for="ga4_measurement_id" class="block text-sm font-medium text-gray-700">
+                        GA4 衡量 ID
+                        <span class="text-gray-500">(例如: G-XXXXXXXXXX)</span>
+                    </label>
+                    <input type="text" 
+                           id="ga4_measurement_id"
+                           x-model="formData.ga4_measurement_id"
+                           placeholder="G-XXXXXXXXXX"
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <p class="mt-1 text-xs text-gray-500">
+                        在 Google Analytics 4 属性设置中找到此 ID
+                    </p>
+                </div>
+
+                <!-- Google Ads Conversion ID -->
+                <div>
+                    <label for="google_ads_conversion_id" class="block text-sm font-medium text-gray-700">
+                        Google Ads 转化 ID
+                        <span class="text-gray-500">(例如: AW-XXXXXXXXX)</span>
+                    </label>
+                    <input type="text" 
+                           id="google_ads_conversion_id"
+                           x-model="formData.google_ads_conversion_id"
+                           placeholder="AW-XXXXXXXXX"
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <p class="mt-1 text-xs text-gray-500">
+                        在 Google Ads 转化设置中找到此 ID
+                    </p>
+                </div>
+
+                <!-- Google Ads Conversion Label -->
+                <div>
+                    <label for="google_ads_conversion_label" class="block text-sm font-medium text-gray-700">
+                        Google Ads 转化标签
+                        <span class="text-gray-500">(例如: abcdefghij_klmnopqr)</span>
+                    </label>
+                    <input type="text" 
+                           id="google_ads_conversion_label"
+                           x-model="formData.google_ads_conversion_label"
+                           placeholder="abcdefghij_klmnopqr"
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <p class="mt-1 text-xs text-gray-500">
+                        在 Google Ads 转化设置中找到此标签
+                    </p>
+                </div>
+
+                <!-- 保存按钮 -->
+                <div class="flex justify-end">
+                    <button type="submit" 
+                            :disabled="saving"
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
+                        <i class="fas fa-save mr-2"></i>
+                        <span x-text="saving ? '保存中...' : '保存设置'"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 帮助信息 -->
+        <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <h4 class="text-lg font-medium text-blue-900 mb-4">
+                <i class="fas fa-info-circle mr-2"></i>如何获取这些 ID？
+            </h4>
+            
+            <div class="space-y-4 text-sm text-blue-800">
+                <div>
+                    <h5 class="font-medium">GA4 衡量 ID：</h5>
+                    <ol class="list-decimal list-inside ml-4 space-y-1">
+                        <li>登录 Google Analytics</li>
+                        <li>选择您的 GA4 属性</li>
+                        <li>点击左下角的"管理"</li>
+                        <li>在"属性"列中点击"数据流"</li>
+                        <li>选择您的网站数据流</li>
+                        <li>在右上角找到"衡量 ID"（格式：G-XXXXXXXXXX）</li>
+                    </ol>
+                </div>
+                
+                <div>
+                    <h5 class="font-medium">Google Ads 转化 ID 和标签：</h5>
+                    <ol class="list-decimal list-inside ml-4 space-y-1">
+                        <li>登录 Google Ads</li>
+                        <li>点击右上角的工具图标</li>
+                        <li>在"衡量"下选择"转化"</li>
+                        <li>点击您要跟踪的转化操作</li>
+                        <li>点击"查看代码"或"标记设置"</li>
+                        <li>找到转化 ID（AW-XXXXXXXXX）和转化标签</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function googleTrackingSettings() {
+    return {
+        formData: {
+            ga4_measurement_id: '{{ settings.ga4_measurement_id or "" }}',
+            google_ads_conversion_id: '{{ settings.google_ads_conversion_id or "" }}',
+            google_ads_conversion_label: '{{ settings.google_ads_conversion_label or "" }}'
+        },
+        saving: false,
+        
+        async saveSettings() {
+            this.saving = true;
+            
+            try {
+                const response = await axios.put('/api/admin/settings/google-tracking', this.formData);
+                
+                if (response.data.status === 'success') {
+                    showToast('设置保存成功', 'success');
+                } else {
+                    throw new Error('保存失败');
+                }
+            } catch (error) {
+                console.error('Failed to save settings:', error);
+                showToast('保存设置失败', 'error');
+            } finally {
+                this.saving = false;
+            }
+        }
+    }
+}
+</script>
+{% endblock %}

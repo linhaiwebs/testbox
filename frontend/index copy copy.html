@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>株式検索 - AI企業分析</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <!-- AI Robot Logo -->
+                    <div class="ai-logo">
+                        <div class="robot-head">
+                            <div class="robot-eyes">
+                                <div class="eye left-eye"></div>
+                                <div class="eye right-eye"></div>
+                            </div>
+                            <div class="robot-mouth"></div>
+                        </div>
+                        <div class="robot-body">
+                            <div class="body-light"></div>
+                        </div>
+                    </div>
+
+                    <h1 class="hero-title">
+                        AI株式<span class="highlight">分析</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        人工知能による企業分析と投資判断支援
+                    </p>
+
+                    <!-- Search Box -->
+                    <div class="search-container">
+                        <div class="search-wrapper">
+                            <input 
+                                type="text" 
+                                id="searchInput"
+                                placeholder="株式コード・企業名を入力"
+                                class="search-input"
+                            >
+                            <button id="searchButton" class="search-button">
+                                <span class="search-icon">分析開始</span>
+                            </button>
+                        </div>
+                        <p class="search-example">例：7203、トヨタ、SONY</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Disclaimer -->
+            <section class="disclaimer">
+                <div class="disclaimer-content">
+                    <p><strong>重要な注意事項：</strong>本サービスは企業情報の収集・整理のみを行い、投資助言や推奨を行うものではありません。投資判断は必ずご自身の責任で行ってください。投資にはリスクが伴い、元本損失の可能性があります。過去の実績は将来の成果を保証するものではありません。</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>AI分析中</h3>
+                <button id="closeModal" class="close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="loadingState" class="loading-state">
+                    <div class="loading-animation">
+                        <div class="loading-circle"></div>
+                        <div class="loading-circle"></div>
+                        <div class="loading-circle"></div>
+                    </div>
+                    <p id="loadingText">企業情報を収集中...</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="completeState" class="complete-state" style="display: none;">
+                    <div class="success-icon">✓</div>
+                    <p id="completeText">情報収集完了</p>
+                    <button id="confirmButton" class="confirm-button">詳細を確認</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
