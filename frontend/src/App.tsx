@@ -367,7 +367,7 @@ function StockDataReport() {
                 株式<span className="highlight">情報検索</span>
               </h1>
               <p className="hero-subtitle">
-                上場企業の基本情報を検索・表示するツール
+                上場企業の公開情報を検索するためのツール
               </p>
 
               {/* Search Box */}
@@ -386,10 +386,10 @@ function StockDataReport() {
                     }}
                   />
                   <button className="search-button" onClick={() => handleSearch()}>
-                    <span className="search-icon">情報検索</span>
+                    <span className="search-icon">検索開始</span>
                   </button>
                 </div>
-                <p className="search-example">例：7203、トヨタ自動車、ソニーグループ</p>
+                <p className="search-example">例：7203、1301、6758</p>
               </div>
             </div>
           </section>
@@ -397,7 +397,7 @@ function StockDataReport() {
           {/* Disclaimer */}
           <section className="disclaimer">
             <div className="disclaimer-content">
-              <p><strong>免責事項：</strong>本サービスは上場企業の基本的な公開情報の検索・表示機能を提供するものです。投資助言、投資推奨、売買の推奨等は一切行いません。投資に関する最終的な判断は、利用者ご自身の責任において行ってください。本サービスの利用により生じた損害について、当社は一切の責任を負いません。投資にはリスクが伴い、元本保証はありません。</p>
+              <p><strong>重要な注意事項：</strong>本サービスは上場企業の公開されている基本情報の検索機能のみを提供します。投資助言、投資推奨、売買推奨は一切行いません。表示される情報は参考目的のみであり、投資判断の根拠として使用することはできません。投資に関するすべての判断と責任は利用者にあります。本サービスの利用により生じたいかなる損害についても、当社は責任を負いません。投資にはリスクが伴い、損失が生じる可能性があります。</p>
             </div>
           </section>
         </div>
